@@ -1,12 +1,16 @@
 #include "Player.h"
-#include "Projectile.h"
 
 
-Player::Player(Vector2 position, float rotation, float speed) :
+Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
 	GameObject(position, rotation),
-	speed(speed)
+	speed(speed),
+	screenSizeX(screenSizeX)
 {
 	addTag(Tag::Player);
+
+
+	//create projectile
+	proj = new Projectile({ 0, 0 }, 270, 250);
 }
 
 Player::~Player()
@@ -36,14 +40,16 @@ void Player::update(float deltaTime)
 {
 	Vector2 force = { 0,0 };
 
-	if (IsKeyDown(KEY_W))
-	{ force.y = -1; }
-	if (IsKeyDown(KEY_S))
-	{ force.y = 1; }
-	if (IsKeyDown(KEY_A))
-	{ force.x = -1; }
-	if (IsKeyDown(KEY_D))
-	{ force.x = 1; }
+	if (IsKeyDown(KEY_A) && position.x > 20)
+	{
+		force.x = -1;
+	}
+	if (IsKeyDown(KEY_D) && position.x < screenSizeX - 20)
+	{
+		force.x = 1;
+	}
+
+
 
 	force = Vector2Scale(force, deltaTime * speed);
 	position = Vector2Add(position, force);
@@ -58,5 +64,10 @@ void Player::update(float deltaTime)
 
 void Player::shoot()
 {
-	new Projectile(position, rotation, 250);
+	//the player only has 1 projectile at a time
+	if (!proj->enabled)
+	{
+		proj->enabled = true;
+		proj->setPos(position);
+	}
 }

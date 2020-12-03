@@ -55,7 +55,7 @@ void GameApp::startup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Galaxian");
 	SetTargetFPS(60);
 
-	GameObject* player = new Player({ 500, 500 }, 270, 200);
+	GameObject* player = new Player({ 500, 500 }, 270, 200, SCREEN_WIDTH);
 
 	new Enemy({ 200, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
 	new Enemy({ 225, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });

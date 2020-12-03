@@ -11,9 +11,12 @@ public:
 	void update(float deltaTime) override;
 	void draw() override;
 
+	bool enabled;
 
 private:
 	Vector2 velocity;
 
 	float timer;
+
+	
 };
