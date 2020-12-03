@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
 
 
 class Enemy : public GameObject
@@ -11,7 +12,7 @@ public:
 	void update(float deltaTime) override;
 	void draw() override;
 
-	static void setupEnemies(Vector2 velocity, GameObject* playerObj)
+	static void setupEnemies(Vector2 velocity, Player* playerObj)
 	{
 		formationVel = velocity;
 		player = playerObj;
@@ -19,7 +20,7 @@ public:
 
 protected:
 	static Vector2 formationVel;
-	static GameObject* player;
+	static Player* player;
 
 	Vector2 formationPos;
 

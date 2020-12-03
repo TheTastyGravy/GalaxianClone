@@ -68,3 +68,8 @@ void Player::shoot()
 		proj->setPos(position);
 	}
 }
+
+void Player::damage()
+{
+
+}

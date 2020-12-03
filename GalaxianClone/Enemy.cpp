@@ -1,7 +1,8 @@
 #include "Enemy.h"
+#include <iostream>
 
 Vector2 Enemy::formationVel;
-GameObject* Enemy::player;
+Player* Enemy::player;
 
 
 Enemy::Enemy(Vector2 position, float rotation, Vector2 screenSize) :
@@ -31,33 +32,26 @@ void Enemy::update(float deltaTime)
 		//*****move toward player
 		if (attackPhase == 0)
 		{
-			Vector2 desieredVel{ 0, 0 };
-			Vector2 force{ 0, 0 };
+			// find the direction currently being faced
+			Vector2 thing = Vector2Rotate({ 1, 0 }, rotation);
+			//angle between velocity and the direction of the player
+			float newRot = Vector2Angle(thing, Vector2Subtract(player->getPos(), position)) ;
 
-			// Get the diference in position to find the heading
-			desieredVel = Vector2Subtract(player->getPos(), position);
-			// If non-zero, normalise
-			if (desieredVel.x != 0.0f && desieredVel.y != 0.0f)
-				desieredVel = Vector2Normalize(desieredVel);
-			// Multiply the heading by the max speed to get desiered velocity
-			desieredVel = Vector2Scale(desieredVel, 250);
+			//get change in rot and clamp to prevent sharp turns
+			newRot -= rotation;
+			newRot = Clamp(newRot, -10, 10);
+			//scale by delta time and multiply to increase turn speed
+			newRot *= deltaTime * 4;
+			rotation += newRot;
+
+			attackVel = Vector2Rotate({ 200, 0 }, rotation);
 
 
-			// Find the force nessesary to change the velocity
-			force = Vector2Subtract(desieredVel, attackVel);
-			// If non-zero, normalise to the base value
-			if (force.x != 0.0f && force.y != 0.0f)
-			{
-				force = Vector2Normalize(force);
-				force = Vector2Scale(force, 75);
-			}
-
-			//apply force
-			attackVel = Vector2Add(attackVel, Vector2Scale(force, deltaTime));
+			//shoot at player
 
 
 			//next phase is past player
-			if (position.y >= player->getPos().y)
+			if (position.y >= player->getPos().y - 10)
 			{
 				attackPhase++;
 			}
@@ -65,7 +59,19 @@ void Enemy::update(float deltaTime)
 		//*****disapear off screen and reappear above
 		else if (attackPhase == 1)
 		{
-			//velocity is maintained from previous state
+			//make it face downwards
+			float newRot = 90;
+
+			//get change in rot and clamp
+			newRot -= rotation;
+			newRot = Clamp(newRot, -15, 15);
+
+			newRot *= deltaTime * 4;
+			rotation += newRot;
+
+			attackVel = Vector2Rotate({ 200, 0 }, rotation);
+
+
 			//once off screen, move back to top
 			if (position.y > screenSize.y)
 			{
@@ -76,29 +82,19 @@ void Enemy::update(float deltaTime)
 		//*****rejoin formation
 		else if (attackPhase == 2)
 		{
-			Vector2 desieredVel{ 0, 0 };
-			Vector2 force{ 0, 0 };
+			// find the direction currently being faced
+			Vector2 thing = Vector2Rotate({ 1, 0 }, rotation);
+			//angle between velocity and the direction of the player
+			float newRot = Vector2Angle(thing, Vector2Subtract(formationPos, position));
 
-			// Get the diference in position to find the heading
-			desieredVel = Vector2Subtract(formationPos, position);
-			// If non-zero, normalise
-			if (desieredVel.x != 0.0f && desieredVel.y != 0.0f)
-				desieredVel = Vector2Normalize(desieredVel);
-			// Multiply the heading by the max speed to get desiered velocity
-			desieredVel = Vector2Scale(desieredVel, 250);
+			//get change in rot
+			newRot -= rotation;
+			//dont clamp to allow sharp turns
+			//scale by delta time and multiply to increase turn speed
+			newRot *= deltaTime * 10;
+			rotation += newRot;
 
-
-			// Find the force nessesary to change the velocity
-			force = Vector2Subtract(desieredVel, attackVel);
-			// If non-zero, normalise to the base value
-			if (force.x != 0.0f && force.y != 0.0f)
-			{
-				force = Vector2Normalize(force);
-				force = Vector2Scale(force, 1000);
-			}
-
-			//apply force
-			attackVel = Vector2Add(attackVel, Vector2Scale(force, deltaTime));
+			attackVel = Vector2Rotate({ 250, 0 }, rotation);
 
 
 			//if close to formation position, reenter formation
@@ -107,12 +103,19 @@ void Enemy::update(float deltaTime)
 				attackPhase = 0;
 				attackVel = Vector2Zero();
 				attacking = false;
+				rotation = 90;
 			}
 		}
 
 
 		//apply velocity
 		position = Vector2Add(position, Vector2Scale(attackVel, deltaTime));
+
+		//check if the enemy has hit the player
+		if (CheckCollisionCircleRec(position, 10, { player->getPos().x, player->getPos().y, 13, 10 }))
+		{
+			player->damage();
+		}
 	}
 	else
 	{
@@ -149,4 +152,8 @@ void Enemy::draw()
 
 
 	DrawCircleV(position, 10, RED);
+
+	//reverse rotation
+	float val = 360 - rotation + 90;
+	DrawCircleSector(position, 15, val + 30, val - 30, 4, DARKPURPLE);
 }

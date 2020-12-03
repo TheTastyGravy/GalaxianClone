@@ -55,18 +55,18 @@ void GameApp::startup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Galaxian");
 	SetTargetFPS(60);
 
-	GameObject* player = new Player({ 500, 500 }, 270, 200, SCREEN_WIDTH);
+	Player* player = new Player({ 500, 500 }, 270, 200, SCREEN_WIDTH);
 
 
 	for (int x = 0; x < 10; x++)
 	{
 		for (int y = 0; y < 5; y++)
 		{
-			new Enemy({ (float)(100 + 60 * x), (float)(100 + 50 * y) }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+			new Enemy({ (float)(100 + 60 * x), (float)(100 + 50 * y) }, 90, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
 		}
 	}
 
-	Enemy::setupEnemies({ 200, 0 }, player);
+	Enemy::setupEnemies({ 100, 0 }, player);
 }
 
 void GameApp::shutdown()
