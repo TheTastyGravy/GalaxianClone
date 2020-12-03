@@ -1,9 +1,10 @@
 #include "GameApp.h"
-#include <memory>
 #include <time.h>
 #include <string>
 #include "raylib.h"
 #include "GameObjectPool.h"
+
+#include "Player.h"
 
 
 void GameApp::run()
@@ -53,7 +54,7 @@ void GameApp::startup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Galaxian");
 	SetTargetFPS(60);
 
-
+	new Player({ 100, 100 }, 270, 200);
 }
 
 void GameApp::shutdown()
