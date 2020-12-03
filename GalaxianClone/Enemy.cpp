@@ -26,8 +26,6 @@ void Enemy::update(float deltaTime)
 	formationPos = Vector2Add(formationPos, Vector2Scale(formationVel, deltaTime));
 
 
-	
-
 	if (attacking)
 	{
 		//*****move toward player
@@ -42,7 +40,7 @@ void Enemy::update(float deltaTime)
 			if (desieredVel.x != 0.0f && desieredVel.y != 0.0f)
 				desieredVel = Vector2Normalize(desieredVel);
 			// Multiply the heading by the max speed to get desiered velocity
-			desieredVel = Vector2Scale(desieredVel, 200);
+			desieredVel = Vector2Scale(desieredVel, 250);
 
 
 			// Find the force nessesary to change the velocity
@@ -51,7 +49,7 @@ void Enemy::update(float deltaTime)
 			if (force.x != 0.0f && force.y != 0.0f)
 			{
 				force = Vector2Normalize(force);
-				force = Vector2Scale(force, 100);
+				force = Vector2Scale(force, 75);
 			}
 
 			//apply force
@@ -67,8 +65,7 @@ void Enemy::update(float deltaTime)
 		//*****disapear off screen and reappear above
 		else if (attackPhase == 1)
 		{
-			//keep velocity
-
+			//velocity is maintained from previous state
 			//once off screen, move back to top
 			if (position.y > screenSize.y)
 			{
@@ -88,7 +85,7 @@ void Enemy::update(float deltaTime)
 			if (desieredVel.x != 0.0f && desieredVel.y != 0.0f)
 				desieredVel = Vector2Normalize(desieredVel);
 			// Multiply the heading by the max speed to get desiered velocity
-			desieredVel = Vector2Scale(desieredVel, 300);
+			desieredVel = Vector2Scale(desieredVel, 250);
 
 
 			// Find the force nessesary to change the velocity
@@ -97,7 +94,7 @@ void Enemy::update(float deltaTime)
 			if (force.x != 0.0f && force.y != 0.0f)
 			{
 				force = Vector2Normalize(force);
-				force = Vector2Scale(force, 500);
+				force = Vector2Scale(force, 1000);
 			}
 
 			//apply force
@@ -122,13 +119,12 @@ void Enemy::update(float deltaTime)
 		position = formationPos;
 
 		//1 in 10 chance each second to attack
-		int val = rand() % (int)(10 * (1/deltaTime));
+		int val = rand() % (int)(150 * (1/deltaTime));
 		if (val == 1)
 		{
 			attacking = true;
 		}
 	}
-	
 }
 
 void Enemy::draw()

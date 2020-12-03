@@ -17,7 +17,6 @@ public:
 		player = playerObj;
 	}
 
-
 protected:
 	static Vector2 formationVel;
 	static GameObject* player;
@@ -27,7 +26,6 @@ protected:
 	bool attacking;
 	int attackPhase;
 	Vector2 attackVel;
-
 
 	Vector2 screenSize;
 };

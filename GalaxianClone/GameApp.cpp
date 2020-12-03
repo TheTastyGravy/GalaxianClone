@@ -57,9 +57,14 @@ void GameApp::startup()
 
 	GameObject* player = new Player({ 500, 500 }, 270, 200, SCREEN_WIDTH);
 
-	new Enemy({ 200, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
-	new Enemy({ 225, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
-	new Enemy({ 175, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+
+	for (int x = 0; x < 10; x++)
+	{
+		for (int y = 0; y < 5; y++)
+		{
+			new Enemy({ (float)(100 + 60 * x), (float)(100 + 50 * y) }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+		}
+	}
 
 	Enemy::setupEnemies({ 200, 0 }, player);
 }

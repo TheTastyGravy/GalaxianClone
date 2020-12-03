@@ -35,7 +35,6 @@ void Projectile::update(float deltaTime)
 	}
 
 
-
 	//check for collision for enemies
 	std::vector<GameObject*> enemies = GameObjectPool::searchForTag(Tag::Enemy);
 
@@ -48,8 +47,6 @@ void Projectile::update(float deltaTime)
 			timer = 0;
 		}
 	}
-	
-
 }
 
 void Projectile::draw()

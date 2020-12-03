@@ -49,11 +49,8 @@ void Player::update(float deltaTime)
 		force.x = 1;
 	}
 
-
-
 	force = Vector2Scale(force, deltaTime * speed);
 	position = Vector2Add(position, force);
-
 
 
 	if (IsKeyPressed(KEY_SPACE))
