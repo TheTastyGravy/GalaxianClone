@@ -5,6 +5,7 @@
 #include "GameObjectPool.h"
 
 #include "Player.h"
+#include "Enemy.h"
 
 
 void GameApp::run()
@@ -54,7 +55,13 @@ void GameApp::startup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Galaxian");
 	SetTargetFPS(60);
 
-	new Player({ 100, 100 }, 270, 200);
+	GameObject* player = new Player({ 500, 500 }, 270, 200);
+
+	new Enemy({ 200, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+	new Enemy({ 225, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+	new Enemy({ 175, 100 }, 0, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+
+	Enemy::setupEnemies({ 200, 0 }, player);
 }
 
 void GameApp::shutdown()

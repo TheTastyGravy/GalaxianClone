@@ -5,7 +5,8 @@
 // All possible tags an object can have
 enum class Tag
 {
-	Player
+	Player,
+	Enemy
 };
 
 

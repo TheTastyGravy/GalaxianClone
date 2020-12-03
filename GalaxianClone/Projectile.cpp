@@ -1,4 +1,5 @@
 #include "Projectile.h"
+#include "GameObjectPool.h"
 
 
 Projectile::Projectile(Vector2 position, float rotation, float speed) :
@@ -25,6 +26,22 @@ void Projectile::update(float deltaTime)
 	{
 		delete this;
 	}
+
+
+
+	//check for collision for enemies
+	std::vector<GameObject*> enemies = GameObjectPool::searchForTag(Tag::Enemy);
+
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		if (CheckCollisionPointCircle(position, enemies[i]->getPos(), 10))
+		{
+			delete enemies[i];
+			delete this;
+		}
+	}
+	
+
 }
 
 void Projectile::draw()
