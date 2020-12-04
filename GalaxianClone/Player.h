@@ -14,6 +14,7 @@ public:
 
 	void damage();
 	void addScore(int score) { this->score += score; }
+	int getScore() { return score; }
 
 	bool gameOver;
 

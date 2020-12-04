@@ -25,5 +25,6 @@ protected:
 	const int SCREEN_HIGHT = 700;
 
 	bool gameOver = false;
+	std::string score;
 
 };

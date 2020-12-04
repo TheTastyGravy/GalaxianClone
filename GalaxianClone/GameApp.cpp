@@ -59,6 +59,10 @@ void GameApp::update(std::vector<GameObject*>& objects)
 
 
 		gameOver = static_cast<Player*>(GameObjectPool::searchForTag(Tag::Player)[0])->gameOver;
+		if (gameOver)
+		{
+			score = std::to_string(static_cast<Player*>(GameObjectPool::searchForTag(Tag::Player)[0])->getScore());
+		}
 	}
 }
 
@@ -70,8 +74,11 @@ void GameApp::draw(std::vector<GameObject*>& objects)
 	if (gameOver)
 	{
 		DrawText("Game Over", SCREEN_WIDTH / 2 - MeasureText("Game Over", 40) / 2, SCREEN_HIGHT / 4 - 40 / 2, 40, WHITE);
-
-		DrawText("Press space to replay", SCREEN_WIDTH / 2 - MeasureText("Press space to replay", 25) / 2, SCREEN_HIGHT / 2 - 25 / 2, 25, WHITE);
+		//score
+		DrawText("Score", SCREEN_WIDTH / 2 - MeasureText("Score", 35) / 2, SCREEN_HIGHT / 2.5f - 35 / 2, 35, WHITE);
+		DrawText(score.c_str(), SCREEN_WIDTH / 2 - MeasureText(score.c_str(), 30) / 2, SCREEN_HIGHT / 2.2f - 30 / 2, 30, WHITE);
+		//prompt
+		DrawText("Press space to replay", SCREEN_WIDTH / 2 - MeasureText("Press space to replay", 25) / 2, SCREEN_HIGHT / 1.5f - 25 / 2, 25, WHITE);
 	}
 	else
 	{
