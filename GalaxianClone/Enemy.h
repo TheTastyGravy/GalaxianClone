@@ -12,14 +12,24 @@ public:
 	void update(float deltaTime) override;
 	void draw() override;
 
-	static void setupEnemies(Vector2 velocity, Player* playerObj)
+	static void setupEnemies(Player* playerObj)
 	{
-		formationVel = velocity;
 		player = playerObj;
+
+		randShoot = 0;
+		randAttack = 0;
+		isAttacking = false;
 	}
 
+	static void updateEnemies(float deltaTime);
+
+	void shoot();
+
 protected:
-	static Vector2 formationVel;
+	static float randShoot;
+	static float randAttack;
+	static bool isAttacking;
+
 	static Player* player;
 
 	Vector2 formationPos;

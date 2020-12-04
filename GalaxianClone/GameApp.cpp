@@ -32,6 +32,8 @@ void GameApp::update(std::vector<GameObject*>& objects)
 	{
 		objects[i]->update(deltaTime);
 	}
+
+	Enemy::updateEnemies(deltaTime);
 }
 
 void GameApp::draw(std::vector<GameObject*>& objects)
@@ -55,18 +57,18 @@ void GameApp::startup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Galaxian");
 	SetTargetFPS(60);
 
-	Player* player = new Player({ 500, 500 }, 270, 200, SCREEN_WIDTH);
+	Player* player = new Player({ SCREEN_WIDTH*0.5f, SCREEN_HIGHT*0.9f }, 270, 200, SCREEN_WIDTH);
 
 
-	for (int x = 0; x < 10; x++)
+	for (int x = 0; x < 7; x++)
 	{
 		for (int y = 0; y < 5; y++)
 		{
-			new Enemy({ (float)(100 + 60 * x), (float)(100 + 50 * y) }, 90, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+			new Enemy({ (float)(100 + 65 * x), (float)(100 + 55 * y) }, 90, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
 		}
 	}
 
-	Enemy::setupEnemies({ 100, 0 }, player);
+	Enemy::setupEnemies(player);
 }
 
 void GameApp::shutdown()

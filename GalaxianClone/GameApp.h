@@ -19,7 +19,7 @@ public:
 	void shutdown();
 
 protected:
-	const int SCREEN_WIDTH = 1000;
-	const int SCREEN_HIGHT = 600;
+	const int SCREEN_WIDTH = 600;
+	const int SCREEN_HIGHT = 700;
 
 };

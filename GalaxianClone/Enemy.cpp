@@ -1,8 +1,11 @@
 #include "Enemy.h"
 #include "EnemyProjectile.h"
+#include "GameObjectPool.h"
 
-Vector2 Enemy::formationVel;
 Player* Enemy::player;
+float Enemy::randShoot;
+float Enemy::randAttack;
+bool Enemy::isAttacking;
 
 
 Enemy::Enemy(Vector2 position, float rotation, Vector2 screenSize) :
@@ -19,15 +22,24 @@ Enemy::Enemy(Vector2 position, float rotation, Vector2 screenSize) :
 
 Enemy::~Enemy()
 {
+	if (attacking)
+	{
+		Enemy::isAttacking = false;
+	}
 }
 
 
+void Enemy::draw()
+{
+	DrawCircleV(position, 10, RED);
+
+	//reverse rotation
+	float val = 360 - rotation + 90;
+	DrawCircleSector(position, 15, val + 30, val - 30, 4, DARKPURPLE);
+}
+
 void Enemy::update(float deltaTime)
 {
-	//update formation position
-	formationPos = Vector2Add(formationPos, Vector2Scale(formationVel, deltaTime));
-
-
 	if (attacking)
 	{
 		//*****move toward player
@@ -52,7 +64,7 @@ void Enemy::update(float deltaTime)
 			shootTimer += deltaTime;
 			if (shootTimer > 1)
 			{
-				new EnemyProjectile(position, rotation, 300);
+				shoot();
 				shootTimer = 0;
 			}
 
@@ -112,6 +124,8 @@ void Enemy::update(float deltaTime)
 				attacking = false;
 				rotation = 90;
 				shootTimer = 0;
+
+				Enemy::isAttacking = false;
 			}
 		}
 
@@ -128,40 +142,47 @@ void Enemy::update(float deltaTime)
 	else
 	{
 		position = formationPos;
-
-		//1 in 10 chance each second to attack
-		int val = rand() % (int)(150 * (1/deltaTime));
-		if (val == 1)
-		{
-			attacking = true;
-		}
 	}
 }
 
-void Enemy::draw()
+void Enemy::shoot()
 {
-	//update formation velocity after update
-	if (formationPos.x > screenSize.x - 5)
-	{
-		formationVel.x = -abs(formationVel.x);
-	}
-	else if (formationPos.x < 5)
-	{
-		formationVel.x = abs(formationVel.x);
-	}
-	if (formationPos.y > screenSize.y - 5)
-	{
-		formationVel.y = -abs(formationVel.x);
-	}
-	else if (formationPos.y < 5)
-	{
-		formationVel.y = abs(formationVel.x);
-	}
+	new EnemyProjectile(position, rotation, 300);
+}
 
 
-	DrawCircleV(position, 10, RED);
+void Enemy::updateEnemies(float deltaTime)
+{
+	randShoot += deltaTime;
+	if (!isAttacking)
+	{
+		randAttack += deltaTime;
+	}
+	
 
-	//reverse rotation
-	float val = 360 - rotation + 90;
-	DrawCircleSector(position, 15, val + 30, val - 30, 4, DARKPURPLE);
+	//random float between 0 and 50
+	float randVal1 = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 50));
+	float randVal2 = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 100));
+
+	if (randVal1 < randShoot)
+	{
+		std::vector<GameObject*> enemies = GameObjectPool::searchForTag(Tag::Enemy);
+
+		//make random enemy shoot
+		static_cast<Enemy*>(enemies[rand() % enemies.size()])->shoot();
+
+		randShoot = 0;
+	}
+
+	if (randVal2 < randAttack && !isAttacking)
+	{
+		std::vector<GameObject*> enemies = GameObjectPool::searchForTag(Tag::Enemy);
+
+		//make random enemy attack
+		static_cast<Enemy*>(enemies[rand() % enemies.size()])->attacking = true;
+
+		isAttacking = true;
+
+		randAttack = 0;
+	}
 }

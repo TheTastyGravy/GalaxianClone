@@ -11,7 +11,6 @@ Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
 {
 	addTag(Tag::Player);
 
-
 	//create projectile
 	proj = new Projectile({ 0, 0 }, 270, 250);
 }
@@ -42,7 +41,7 @@ void Player::draw()
 	{
 		//blink when invuln
 		float dec = floor(invulnTimer);
-		DrawTriangle(v1, v2, v3, (invulnTimer - dec < 0.5f) ? BLACK : WHITE);
+		DrawTriangle(v1, v2, v3, (invulnTimer - dec < 0.5f) ? DARKGRAY : WHITE);
 	}
 	else
 	{
@@ -96,6 +95,11 @@ void Player::shoot()
 
 void Player::damage()
 {
+	if (isInvulnerable)
+	{
+		return;
+	}
+
 	lives--;
 	isInvulnerable = true;
 	invulnTimer = 0;
