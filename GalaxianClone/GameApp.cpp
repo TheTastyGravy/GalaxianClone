@@ -45,6 +45,19 @@ void GameApp::update(std::vector<GameObject*>& objects)
 			objects[i]->update(deltaTime);
 		}
 
+		//if all enemies are destroied, create new ones
+		if (GameObjectPool::searchForTag(Tag::Enemy).size() == 0)
+		{
+			for (int x = 0; x < 7; x++)
+			{
+				for (int y = 0; y < 5; y++)
+				{
+					new Enemy({ (float)(100 + 65 * x), (float)(100 + 55 * y) }, 90, { (float)SCREEN_WIDTH, (float)SCREEN_HIGHT });
+				}
+			}
+		}
+
+
 		gameOver = static_cast<Player*>(GameObjectPool::searchForTag(Tag::Player)[0])->gameOver;
 	}
 }
