@@ -27,6 +27,7 @@ protected:
 	bool attacking;
 	int attackPhase;
 	Vector2 attackVel;
+	float shootTimer;
 
 	Vector2 screenSize;
 };

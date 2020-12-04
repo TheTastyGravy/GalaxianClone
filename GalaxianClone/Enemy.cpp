@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include <iostream>
+#include "EnemyProjectile.h"
 
 Vector2 Enemy::formationVel;
 Player* Enemy::player;
@@ -11,7 +11,8 @@ Enemy::Enemy(Vector2 position, float rotation, Vector2 screenSize) :
 	attacking(false),
 	attackPhase(0),
 	formationPos(position),
-	attackVel({ 0, 0 })
+	attackVel({ 0, 0 }),
+	shootTimer(0)
 {
 	addTag(Tag::Enemy);
 }
@@ -48,6 +49,12 @@ void Enemy::update(float deltaTime)
 
 
 			//shoot at player
+			shootTimer += deltaTime;
+			if (shootTimer > 1)
+			{
+				new EnemyProjectile(position, rotation, 300);
+				shootTimer = 0;
+			}
 
 
 			//next phase is past player
@@ -89,21 +96,22 @@ void Enemy::update(float deltaTime)
 
 			//get change in rot
 			newRot -= rotation;
-			//dont clamp to allow sharp turns
+			newRot = Clamp(newRot, -30, 30);
 			//scale by delta time and multiply to increase turn speed
-			newRot *= deltaTime * 10;
+			newRot *= deltaTime * 15;
 			rotation += newRot;
 
 			attackVel = Vector2Rotate({ 250, 0 }, rotation);
 
 
 			//if close to formation position, reenter formation
-			if (Vector2Distance(position, formationPos) < 15)
+			if (Vector2Distance(position, formationPos) <= 20)
 			{
 				attackPhase = 0;
 				attackVel = Vector2Zero();
 				attacking = false;
 				rotation = 90;
+				shootTimer = 0;
 			}
 		}
 
