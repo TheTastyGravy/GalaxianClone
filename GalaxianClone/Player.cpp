@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <string>
 
 
 Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
@@ -8,12 +9,13 @@ Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
 	lives(3),
 	isInvulnerable(false),
 	invulnTimer(0),
-	gameOver(false)
+	gameOver(false),
+	score(0)
 {
 	addTag(Tag::Player);
 
 	//create projectile
-	proj = new Projectile({ 0, 0 }, 270, 250);
+	proj = new Projectile({ 0, 0 }, 270, 250, this);
 }
 
 Player::~Player()
@@ -48,6 +50,10 @@ void Player::draw()
 	{
 		DrawTriangle(v1, v2, v3, WHITE);
 	}
+
+	//display score and lives
+	DrawText(("Score: " + std::to_string(score)).c_str(), 20, 20, 30, WHITE);
+	DrawText(("Lives: " + std::to_string(lives)).c_str(), screenSizeX - 125, 20, 30, WHITE);
 }
 
 void Player::update(float deltaTime)

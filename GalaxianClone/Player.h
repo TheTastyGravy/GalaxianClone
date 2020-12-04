@@ -13,6 +13,7 @@ public:
 	void draw() override;
 
 	void damage();
+	void addScore(int score) { this->score += score; }
 
 	bool gameOver;
 
@@ -25,6 +26,7 @@ private:
 
 	Projectile* proj;
 
+	int score;
 	int lives;
 	bool isInvulnerable;
 	float invulnTimer;

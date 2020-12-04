@@ -31,11 +31,11 @@ Enemy::~Enemy()
 
 void Enemy::draw()
 {
-	DrawCircleV(position, 10, RED);
+	DrawCircleV(position, 13, RED);
 
 	//reverse rotation
 	float val = 360 - rotation + 90;
-	DrawCircleSector(position, 15, val + 30, val - 30, 4, DARKPURPLE);
+	DrawCircleSector(position, 17, val + 30, val - 30, 4, DARKPURPLE);
 }
 
 void Enemy::update(float deltaTime)

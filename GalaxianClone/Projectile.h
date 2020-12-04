@@ -5,7 +5,7 @@
 class Projectile : public GameObject
 {
 public:
-	Projectile(Vector2 position, float rotation, float speed);
+	Projectile(Vector2 position, float rotation, float speed, GameObject* player);
 	~Projectile();
 
 	void update(float deltaTime) override;
@@ -17,5 +17,7 @@ private:
 	Vector2 velocity;
 
 	float timer;
+
+	GameObject* player;
 
 };

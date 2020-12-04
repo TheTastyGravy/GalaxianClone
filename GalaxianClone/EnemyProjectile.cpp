@@ -30,7 +30,7 @@ void EnemyProjectile::update(float deltaTime)
 		
 	Player* player = static_cast<Player*>(GameObjectPool::searchForTag(Tag::Player)[0]);
 	
-	if (CheckCollisionPointRec(position, { player->getPos().x, player->getPos().y, 13, 10 }))
+	if (CheckCollisionPointRec(position, { player->getPos().x - 8, player->getPos().y - 10, 16, 20 }))
 	{
 		player->damage();
 	}
