@@ -14,6 +14,8 @@ public:
 
 	void damage();
 
+	bool gameOver;
+
 private:
 	void shoot();
 

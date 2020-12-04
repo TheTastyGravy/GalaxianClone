@@ -7,7 +7,8 @@ Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
 	screenSizeX(screenSizeX),
 	lives(3),
 	isInvulnerable(false),
-	invulnTimer(0)
+	invulnTimer(0),
+	gameOver(false)
 {
 	addTag(Tag::Player);
 
@@ -107,6 +108,6 @@ void Player::damage()
 
 	if (lives < 0)
 	{
-		//game over
+		gameOver = true;
 	}
 }

@@ -18,8 +18,12 @@ public:
 	void startup();
 	void shutdown();
 
+	void startGame();
+
 protected:
 	const int SCREEN_WIDTH = 600;
 	const int SCREEN_HIGHT = 700;
+
+	bool gameOver = false;
 
 };
