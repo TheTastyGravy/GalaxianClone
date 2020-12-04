@@ -23,4 +23,8 @@ private:
 
 	Projectile* proj;
 
+	int lives;
+	bool isInvulnerable;
+	float invulnTimer;
+
 };

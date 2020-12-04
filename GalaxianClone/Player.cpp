@@ -4,7 +4,10 @@
 Player::Player(Vector2 position, float rotation, float speed, int screenSizeX) :
 	GameObject(position, rotation),
 	speed(speed),
-	screenSizeX(screenSizeX)
+	screenSizeX(screenSizeX),
+	lives(3),
+	isInvulnerable(false),
+	invulnTimer(0)
 {
 	addTag(Tag::Player);
 
@@ -33,13 +36,34 @@ void Player::draw()
 	v3 = Vector2Rotate(v3, rotation);
 	v3 = Vector2Add(v3, position);
 
-	DrawTriangle(v1, v2, v3, WHITE);
+	
+
+	if (isInvulnerable)
+	{
+		//blink when invuln
+		float dec = floor(invulnTimer);
+		DrawTriangle(v1, v2, v3, (invulnTimer - dec < 0.5f) ? BLACK : WHITE);
+	}
+	else
+	{
+		DrawTriangle(v1, v2, v3, WHITE);
+	}
 }
 
 void Player::update(float deltaTime)
 {
-	Vector2 force = { 0,0 };
+	//use timer to unset invuln after 3 seconds
+	if (isInvulnerable)
+	{
+		invulnTimer += deltaTime;
+		if (invulnTimer > 3)
+		{
+			isInvulnerable = false;
+		}
+	}
 
+	//get movement
+	Vector2 force = { 0,0 };
 	if (IsKeyDown(KEY_A) && position.x > 20)
 	{
 		force.x = -1;
@@ -61,15 +85,24 @@ void Player::update(float deltaTime)
 
 void Player::shoot()
 {
-	//the player only has 1 projectile at a time
-	if (!proj->enabled)
+	//the player only has 1 projectile at a time, and cant shoot while invuln
+	if (!proj->enabled && !isInvulnerable)
 	{
 		proj->enabled = true;
 		proj->setPos(position);
 	}
 }
 
+
 void Player::damage()
 {
+	lives--;
+	isInvulnerable = true;
+	invulnTimer = 0;
 
+
+	if (lives < 0)
+	{
+		//game over
+	}
 }
