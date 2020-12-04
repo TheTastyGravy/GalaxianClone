@@ -82,6 +82,8 @@ void GameApp::draw(std::vector<GameObject*>& objects)
 		}
 	}
 
+	DrawFPS(5, 5);
+
 	EndDrawing();
 }
 

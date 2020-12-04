@@ -42,7 +42,7 @@ void Projectile::update(float deltaTime)
 
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		if (CheckCollisionPointCircle(position, enemies[i]->getPos(), 13))
+		if (CheckCollisionPointCircle(position, enemies[i]->getPos(), 16))
 		{
 			delete enemies[i];
 			enabled = false;
