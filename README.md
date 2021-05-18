@@ -1,5 +1,6 @@
 # GalaxianClone
 Galaxian clone made in C++ with Raylib
+![Screenshot](Screenshot.png)
 
 ## Building
 The program uses Raylib, and looks for raylib.lib in the raylib projects build directory.
